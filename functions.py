@@ -11,13 +11,18 @@ def minutes_output(start, end):
     return diff_minutes_output
 
 
-def standardized_format(point):
-    return datetime.datetime.strftime(point, "%I:%M%p %Y-%m-%d")
+def standardized_format_date(point):
+    return datetime.datetime.strftime(point, "%Y-%m-%d")
+
+
+def standardized_format_time(point):
+    return datetime.datetime.strftime(point, "%I:%M%p")
 
 
 def start_tracking(current_obj):
     start = datetime.datetime.now()
-    start_time = standardized_format(start)
+    start_time_date = standardized_format_date(start)
+    start_time_time = standardized_format_time(start)
 
     print("\n=========================")
     print("Press ENTER to stop recording time...")
@@ -25,12 +30,15 @@ def start_tracking(current_obj):
     input('\n')
 
     end = stop_tracking()
-    end_time = standardized_format(end)
+    end_time_date = standardized_format_date(end)
+    end_time_time = standardized_format_time(end)
+
 
     with open('data.csv', 'a', newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter=',')
-        writer.writerow([current_obj, start_time, end_time,
-                         minutes_output(start, end)])
+        writer.writerow([current_obj, start_time_date,
+                         start_time_time, end_time_date,
+                         end_time_time, minutes_output(start, end)])
 
 
 def stop_tracking():
